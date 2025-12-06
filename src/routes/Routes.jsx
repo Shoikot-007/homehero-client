@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Profile from "../pages/Profile";
 import Services from "../pages/Services";
+import ServiceDetails from "../pages/ServiceDetails";
 import NotFound from "../pages/NotFound";
 import PrivateRoute from "./PrivateRoute";
 
@@ -17,6 +18,7 @@ const Routes = () => {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="services" element={<Services />} />
+          <Route path="services/:id" element={<ServiceDetails />} />
 
           {/* Private Routes */}
           <Route
