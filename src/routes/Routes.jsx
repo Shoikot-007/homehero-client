@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Profile from "../pages/Profile";
+import Services from "../pages/Services";
 import NotFound from "../pages/NotFound";
 import PrivateRoute from "./PrivateRoute";
 
@@ -15,6 +16,7 @@ const Routes = () => {
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="services" element={<Services />} />
 
           {/* Private Routes */}
           <Route
