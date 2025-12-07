@@ -3,12 +3,21 @@ import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { FaTrash, FaCalendar, FaDollarSign, FaUser } from "react-icons/fa";
+import ReviewModal from "../components/ReviewModal";
+import {
+  FaTrash,
+  FaCalendar,
+  FaDollarSign,
+  FaUser,
+  FaStar,
+} from "react-icons/fa";
 
 const MyBookings = () => {
   const { user } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -32,7 +41,6 @@ const MyBookings = () => {
   };
 
   const handleCancelBooking = async (id, serviceName) => {
-    // Confirm cancellation
     if (
       !window.confirm(
         `Are you sure you want to cancel the booking for "${serviceName}"?`
@@ -44,11 +52,20 @@ const MyBookings = () => {
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/api/bookings/${id}`);
       toast.success("Booking cancelled successfully!");
-      fetchMyBookings(); // Refresh the list
+      fetchMyBookings();
     } catch (error) {
       console.error("Error cancelling booking:", error);
       toast.error("Failed to cancel booking");
     }
+  };
+
+  const handleAddReview = (booking) => {
+    setSelectedBooking(booking);
+    setShowReviewModal(true);
+  };
+
+  const handleReviewSuccess = () => {
+    fetchMyBookings();
   };
 
   const formatDate = (dateString) => {
@@ -69,7 +86,6 @@ const MyBookings = () => {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      {/* Page Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-neutral-dark mb-2">
           My Bookings
@@ -77,7 +93,6 @@ const MyBookings = () => {
         <p className="text-gray-600">View and manage your service bookings</p>
       </div>
 
-      {/* Bookings Table */}
       {bookings.length > 0 ? (
         <div className="card overflow-x-auto">
           <table className="w-full">
@@ -160,16 +175,26 @@ const MyBookings = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <button
-                      onClick={() =>
-                        handleCancelBooking(booking._id, booking.serviceName)
-                      }
-                      className="p-2 text-error hover:bg-red-50 rounded-lg transition-colors flex items-center space-x-2"
-                      title="Cancel Booking"
-                    >
-                      <FaTrash />
-                      <span className="text-sm">Cancel</span>
-                    </button>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleAddReview(booking)}
+                        className="p-2 text-secondary hover:bg-green-50 rounded-lg transition-colors flex items-center space-x-1"
+                        title="Add Review"
+                      >
+                        <FaStar />
+                        <span className="text-sm">Review</span>
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleCancelBooking(booking._id, booking.serviceName)
+                        }
+                        className="p-2 text-error hover:bg-red-50 rounded-lg transition-colors flex items-center space-x-1"
+                        title="Cancel Booking"
+                      >
+                        <FaTrash />
+                        <span className="text-sm">Cancel</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -190,6 +215,18 @@ const MyBookings = () => {
             Browse Services
           </Link>
         </div>
+      )}
+
+      {/* Review Modal */}
+      {showReviewModal && selectedBooking && (
+        <ReviewModal
+          booking={selectedBooking}
+          onClose={() => {
+            setShowReviewModal(false);
+            setSelectedBooking(null);
+          }}
+          onReviewSuccess={handleReviewSuccess}
+        />
       )}
     </div>
   );

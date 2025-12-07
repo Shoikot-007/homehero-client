@@ -12,19 +12,22 @@ const Navbar = () => {
     logout()
       .then(() => {
         toast.success("Logged out successfully!");
+        setIsMenuOpen(false);
       })
       .catch(() => {
         toast.error("Logout failed!");
       });
   };
 
+  const closeMenu = () => setIsMenuOpen(false);
+
   const navLinks = (
     <>
-      <li>
+      <li onClick={closeMenu}>
         <NavLink
           to="/"
           className={({ isActive }) =>
-            `hover:text-primary transition-colors ${
+            `block py-2 hover:text-primary transition-colors ${
               isActive ? "text-primary font-semibold" : ""
             }`
           }
@@ -32,11 +35,11 @@ const Navbar = () => {
           Home
         </NavLink>
       </li>
-      <li>
+      <li onClick={closeMenu}>
         <NavLink
           to="/services"
           className={({ isActive }) =>
-            `hover:text-primary transition-colors ${
+            `block py-2 hover:text-primary transition-colors ${
               isActive ? "text-primary font-semibold" : ""
             }`
           }
@@ -47,11 +50,11 @@ const Navbar = () => {
 
       {user && (
         <>
-          <li>
+          <li onClick={closeMenu}>
             <NavLink
               to="/my-services"
               className={({ isActive }) =>
-                `hover:text-primary transition-colors ${
+                `block py-2 hover:text-primary transition-colors ${
                   isActive ? "text-primary font-semibold" : ""
                 }`
               }
@@ -59,11 +62,11 @@ const Navbar = () => {
               My Services
             </NavLink>
           </li>
-          <li>
+          <li onClick={closeMenu}>
             <NavLink
               to="/add-service"
               className={({ isActive }) =>
-                `hover:text-primary transition-colors ${
+                `block py-2 hover:text-primary transition-colors ${
                   isActive ? "text-primary font-semibold" : ""
                 }`
               }
@@ -71,11 +74,11 @@ const Navbar = () => {
               Add Service
             </NavLink>
           </li>
-          <li>
+          <li onClick={closeMenu}>
             <NavLink
               to="/my-bookings"
               className={({ isActive }) =>
-                `hover:text-primary transition-colors ${
+                `block py-2 hover:text-primary transition-colors ${
                   isActive ? "text-primary font-semibold" : ""
                 }`
               }
@@ -83,11 +86,11 @@ const Navbar = () => {
               My Bookings
             </NavLink>
           </li>
-          <li>
+          <li onClick={closeMenu}>
             <NavLink
               to="/profile"
               className={({ isActive }) =>
-                `hover:text-primary transition-colors ${
+                `block py-2 hover:text-primary transition-colors ${
                   isActive ? "text-primary font-semibold" : ""
                 }`
               }
@@ -105,7 +108,11 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link
+            to="/"
+            className="flex items-center space-x-2"
+            onClick={closeMenu}
+          >
             <div className="h-10 w-10 bg-primary rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-xl">HH</span>
             </div>
@@ -147,7 +154,8 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-2xl"
+            className="md:hidden text-2xl text-neutral-dark"
+            aria-label="Toggle menu"
           >
             {isMenuOpen ? <FaTimes /> : <FaBars />}
           </button>
@@ -155,35 +163,43 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4">
-            <ul className="flex flex-col space-y-3">{navLinks}</ul>
-            <div className="mt-4 flex flex-col space-y-2">
+          <div className="md:hidden pb-4 border-t border-gray-200 mt-2 pt-4">
+            <ul className="flex flex-col space-y-1">{navLinks}</ul>
+            <div className="mt-4 pt-4 border-t border-gray-200">
               {user ? (
                 <>
-                  <div className="flex items-center space-x-3 pb-2">
+                  <div className="flex items-center space-x-3 pb-3">
                     <img
                       src={user.photoURL || "https://via.placeholder.com/40"}
                       alt={user.displayName}
                       className="h-10 w-10 rounded-full border-2 border-primary object-cover"
                     />
-                    <span className="font-medium">{user.displayName}</span>
+                    <div>
+                      <p className="font-medium">{user.displayName}</p>
+                      <p className="text-sm text-gray-500">{user.email}</p>
+                    </div>
                   </div>
                   <button onClick={handleLogout} className="btn-primary w-full">
                     Logout
                   </button>
                 </>
               ) : (
-                <>
+                <div className="space-y-2">
                   <Link
                     to="/login"
-                    className="text-center py-2 text-primary font-semibold"
+                    onClick={closeMenu}
+                    className="block text-center py-2 text-primary font-semibold border-2 border-primary rounded-lg hover:bg-blue-50 transition-colors"
                   >
                     Login
                   </Link>
-                  <Link to="/register" className="btn-primary text-center">
+                  <Link
+                    to="/register"
+                    onClick={closeMenu}
+                    className="btn-primary block text-center"
+                  >
                     Register
                   </Link>
-                </>
+                </div>
               )}
             </div>
           </div>
