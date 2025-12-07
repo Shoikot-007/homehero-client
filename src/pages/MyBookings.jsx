@@ -1,0 +1,198 @@
+import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { FaTrash, FaCalendar, FaDollarSign, FaUser } from "react-icons/fa";
+
+const MyBookings = () => {
+  const { user } = useAuth();
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user) {
+      fetchMyBookings();
+    }
+  }, [user]);
+
+  const fetchMyBookings = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/bookings/user/${user.email}`
+      );
+      setBookings(response.data);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+      toast.error("Failed to load your bookings");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancelBooking = async (id, serviceName) => {
+    // Confirm cancellation
+    if (
+      !window.confirm(
+        `Are you sure you want to cancel the booking for "${serviceName}"?`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/bookings/${id}`);
+      toast.success("Booking cancelled successfully!");
+      fetchMyBookings(); // Refresh the list
+    } catch (error) {
+      console.error("Error cancelling booking:", error);
+      toast.error("Failed to cancel booking");
+    }
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-12">
+      {/* Page Header */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-neutral-dark mb-2">
+          My Bookings
+        </h1>
+        <p className="text-gray-600">View and manage your service bookings</p>
+      </div>
+
+      {/* Bookings Table */}
+      {bookings.length > 0 ? (
+        <div className="card overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b">
+              <tr>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                  Service
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                  Provider
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                  Booking Date
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                  Price
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {bookings.map((booking) => (
+                <tr
+                  key={booking._id}
+                  className="hover:bg-gray-50 transition-colors"
+                >
+                  <td className="px-6 py-4">
+                    <div className="flex items-center space-x-3">
+                      <img
+                        src={
+                          booking.imageURL || "https://via.placeholder.com/60"
+                        }
+                        alt={booking.serviceName}
+                        className="w-16 h-16 rounded-lg object-cover"
+                      />
+                      <div>
+                        <p className="font-semibold text-neutral-dark">
+                          {booking.serviceName}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          Booked on {formatDate(booking.createdAt)}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center space-x-2">
+                      <FaUser className="text-gray-400" />
+                      <span>{booking.providerName}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center space-x-2">
+                      <FaCalendar className="text-primary" />
+                      <span>{formatDate(booking.bookingDate)}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center space-x-1 font-semibold text-primary">
+                      <FaDollarSign />
+                      <span>{booking.price}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
+                        booking.status === "pending"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : booking.status === "confirmed"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      {booking.status || "Pending"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() =>
+                        handleCancelBooking(booking._id, booking.serviceName)
+                      }
+                      className="p-2 text-error hover:bg-red-50 rounded-lg transition-colors flex items-center space-x-2"
+                      title="Cancel Booking"
+                    >
+                      <FaTrash />
+                      <span className="text-sm">Cancel</span>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="text-center py-20 card">
+          <div className="text-6xl mb-4">📅</div>
+          <h3 className="text-2xl font-semibold text-neutral-dark mb-2">
+            No Bookings Yet
+          </h3>
+          <p className="text-gray-600 mb-6">
+            You haven't booked any services yet. Browse our services and book
+            one today!
+          </p>
+          <Link to="/services" className="btn-primary inline-block">
+            Browse Services
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MyBookings;
