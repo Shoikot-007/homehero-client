@@ -55,7 +55,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-linear-to-br from-blue-50 to-green-50">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-neutral-light">
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">

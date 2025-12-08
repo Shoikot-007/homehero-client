@@ -100,7 +100,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-gradient-to-br from-green-50 to-blue-50">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-neutral-light">
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">

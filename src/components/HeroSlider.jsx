@@ -12,7 +12,7 @@ const HeroSlider = () => {
       title: "Find Trusted Electricians",
       description:
         "Connect with certified electrical professionals for all your home and business needs. Safe, reliable, and efficient service guaranteed.",
-      image: "/images/electrician-hero.jpg",
+      image: "/hero-bg-1.jpg",
       bgColor: "from-blue-600 to-blue-800",
     },
     {
@@ -20,16 +20,16 @@ const HeroSlider = () => {
       title: "Expert Plumbing Services",
       description:
         "Get your plumbing issues resolved quickly by experienced plumbers. From repairs to installations, we have you covered.",
-      image: "/images/plumber-hero.jpg",
-      bgColor: "from-green-600 to-green-800",
+      image: "/hero-bg-2.jpg",
+      bgColor: "from-blue-600 to-blue-800",
     },
     {
       id: 3,
       title: "Professional Cleaning Services",
       description:
         "Transform your space with our professional cleaning services. Spotless results, eco-friendly products, and affordable rates.",
-      image: "/images/cleaner-hero.jpg",
-      bgColor: "from-purple-600 to-purple-800",
+      image: "/hero-bg-3.jpg",
+      bgColor: "from-blue-600 to-blue-800",
     },
   ];
 
@@ -41,13 +41,11 @@ const HeroSlider = () => {
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         loop={true}
-        className="h-[500px] md:h-[600px]"
+        className="h-[500px] lg:h-[calc(100vh-80px)]"
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <div
-              className={`relative h-full bg-gradient-to-r ${slide.bgColor}`}
-            >
+            <div className={`relative h-full bg-linear-to-r ${slide.bgColor}`}>
               {/* Background Image Overlay */}
               <div
                 className="absolute inset-0 bg-cover bg-center opacity-30"
@@ -55,17 +53,19 @@ const HeroSlider = () => {
               ></div>
 
               {/* Content */}
-              <div className="relative h-full container mx-auto px-4 flex items-center">
-                <div className="max-w-2xl text-white">
-                  <h1 className="text-4xl md:text-6xl font-bold mb-4 animate-fade-in">
+              <div className="relative h-full container mx-auto px-4 flex items-center justify-center">
+                <div className="max-w-65 sm:max-w-2xl text-white">
+                  <h1 className="text-4xl md:text-6xl font-bold mb-4 animate-fade-in text-center">
                     {slide.title}
                   </h1>
-                  <p className="text-lg md:text-xl mb-8 text-gray-100">
+                  <p className="text-lg md:text-xl mb-8 text-gray-100 text-center">
                     {slide.description}
                   </p>
-                  <Link to="/services" className="btn-accent">
-                    Explore Services
-                  </Link>
+                  <div className="flex items-center justify-center">
+                    <Link to="/services" className="btn-accent">
+                      Explore Services
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -89,13 +89,23 @@ const HeroSlider = () => {
         .swiper-button-prev {
           color: white;
           background: rgba(0, 0, 0, 0.3);
-          width: 50px;
-          height: 50px;
+          width: 40px;
+          height: 40px;
           border-radius: 50%;
+        }
+        .swiper-button-prev {
+          margin-left: 5px !important;
+        }
+        .swiper-button-next {
+          margin-right: 5px !important;
         }
         .swiper-button-next:after,
         .swiper-button-prev:after {
           font-size: 20px;
+        }
+        .swiper-navigation-icon {
+          width: 10px !important;
+          height: 20px !important;
         }
       `}</style>
     </div>

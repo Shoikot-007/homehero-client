@@ -86,7 +86,7 @@ const ServiceDetails = () => {
             <img
               src={service.imageURL || "https://via.placeholder.com/600x400"}
               alt={service.serviceName}
-              className="w-full h-96 object-cover"
+              className="w-full h-107 object-cover"
             />
           </div>
 
@@ -104,12 +104,12 @@ const ServiceDetails = () => {
               <div className="flex items-center space-x-2 mb-4">
                 <div className="flex items-center space-x-1 text-accent">
                   <FaStar />
-                  <span className="font-semibold text-neutral-dark">
-                    {service.averageRating || "New"}
+                  <span className="font-semibold text-neutral-dark dark:text-white">
+                    {service.averageRating > 0 ? service.averageRating : "New"}
                   </span>
                 </div>
                 {service.totalReviews > 0 && (
-                  <span className="text-gray-500">
+                  <span className="text-gray-500 dark:text-gray-400">
                     ({service.totalReviews} reviews)
                   </span>
                 )}
@@ -144,7 +144,7 @@ const ServiceDetails = () => {
               className={`w-full py-4 rounded-lg font-bold text-lg transition-all shadow-lg ${
                 isOwnService
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-accent text-neutral-dark hover:bg-yellow-400 transform hover:scale-105"
+                  : "bg-accent text-black hover:bg-yellow-400 transform hover:scale-105"
               }`}
             >
               {isOwnService ? "Cannot Book Your Own Service" : "Book Now"}

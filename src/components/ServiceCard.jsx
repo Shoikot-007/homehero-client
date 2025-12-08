@@ -34,7 +34,7 @@ const ServiceCard = ({ service, index }) => {
         </p>
 
         {/* Provider Info */}
-        <div className="flex items-center space-x-2 text-sm text-gray-500">
+        <div className="flex items-center space-x-2 text-sm text-neutral-dark">
           <img
             src={service.providerImage || "https://via.placeholder.com/40"}
             alt={service.providerName}
@@ -44,13 +44,13 @@ const ServiceCard = ({ service, index }) => {
         </div>
 
         {/* Rating & Price */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-200">
-          <div className="flex items-center space-x-1 text-accent">
-            <FaStar />
+        <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center space-x-1">
+            <FaStar className="text-accent" />
             <span className="font-semibold text-neutral-dark">
-              {service.averageRating || "New"}
+              {service.averageRating > 0 ? service.averageRating : "New"}
             </span>
-            {service.totalReviews && (
+            {service.totalReviews > 0 && (
               <span className="text-gray-500 text-sm">
                 ({service.totalReviews})
               </span>

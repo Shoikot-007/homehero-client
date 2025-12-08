@@ -125,14 +125,14 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Menu */}
-          <ul className="hidden md:flex space-x-6 items-center">{navLinks}</ul>
+          <ul className="hidden lg:flex space-x-6 items-center">{navLinks}</ul>
 
           {/* Auth Buttons & Theme Toggle - Desktop */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-4">
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-lg hover:bg-gray-200 transition-colors"
               aria-label="Toggle theme"
             >
               {isDark ? (
@@ -172,7 +172,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-2xl text-neutral-dark dark:text-white"
+            className="lg:hidden text-2xl text-neutral-dark"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <FaTimes /> : <FaBars />}
@@ -181,7 +181,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4 border-t border-gray-200 dark:border-gray-700 mt-2 pt-4">
+          <div className="lg:hidden pb-4 border-t border-gray-200 dark:border-gray-700 mt-2 pt-4">
             <ul className="flex flex-col space-y-1">{navLinks}</ul>
             <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
               {/* Theme Toggle - Mobile */}

@@ -135,7 +135,9 @@ const MyServices = () => {
                     <div className="flex items-center space-x-1">
                       <span className="text-accent">★</span>
                       <span className="font-medium">
-                        {service.averageRating || "New"}
+                        {service.averageRating > 0
+                          ? service.averageRating
+                          : "New"}
                       </span>
                       {service.totalReviews > 0 && (
                         <span className="text-gray-500 text-sm">
