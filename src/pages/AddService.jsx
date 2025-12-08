@@ -200,7 +200,7 @@ const AddService = () => {
                   <img
                     src={formData.imageURL}
                     alt="Preview"
-                    className="w-full h-48 object-cover rounded-lg"
+                    className="w-full h-104 object-cover rounded-lg"
                     onError={(e) => {
                       e.target.src = "https://via.placeholder.com/400x300";
                     }}

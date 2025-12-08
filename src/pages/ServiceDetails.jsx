@@ -11,6 +11,7 @@ import {
   FaDollarSign,
   FaTag,
   FaCalendar,
+  FaTrash,
 } from "react-icons/fa";
 
 const ServiceDetails = () => {
@@ -62,6 +63,20 @@ const ServiceDetails = () => {
     fetchServiceDetails();
   };
 
+  const handleDeleteReview = async (userEmail) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/services/${id}/review`,
+        { data: { userEmail } }
+      );
+      toast.success("Review deleted successfully!");
+      fetchServiceDetails();
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      toast.error("Failed to delete review");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -86,7 +101,7 @@ const ServiceDetails = () => {
             <img
               src={service.imageURL || "https://via.placeholder.com/600x400"}
               alt={service.serviceName}
-              className="w-full h-107 object-cover"
+              className="h-full object-cover"
             />
           </div>
 
@@ -197,26 +212,77 @@ const ServiceDetails = () => {
         {/* Reviews Section */}
         {service.reviews && service.reviews.length > 0 && (
           <div className="card mt-8">
-            <h2 className="text-2xl font-bold text-neutral-dark mb-6">
-              Customer Reviews
+            <h2 className="text-2xl font-bold text-neutral-dark dark:text-white mb-6">
+              Customer Reviews ({service.totalReviews})
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-6">
               {service.reviews.map((review, index) => (
                 <div
                   key={index}
-                  className="border-b border-gray-200 pb-4 last:border-0"
+                  className="border-b border-gray-200 dark:border-gray-700 pb-6 last:border-0"
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-semibold">{review.userName}</span>
-                    <div className="flex items-center space-x-1 text-accent">
-                      <FaStar />
-                      <span>{review.rating}</span>
+                  <div className="flex items-start space-x-4">
+                    {/* Profile Picture */}
+                    <img
+                      src={
+                        review.userImage ||
+                        `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                          review.userName
+                        )}&background=1E88E5&color=fff`
+                      }
+                      alt={review.userName}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+
+                    <div className="flex-1">
+                      {/* Reviewer Info & Rating */}
+                      <div className="flex items-center justify-between mb-2">
+                        <div>
+                          <h4 className="font-semibold text-neutral-dark dark:text-white">
+                            {review.userName}
+                          </h4>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {new Date(review.date).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })}
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-1 text-accent">
+                            {[...Array(5)].map((_, i) => (
+                              <FaStar
+                                key={i}
+                                className={
+                                  i < review.rating
+                                    ? "text-accent"
+                                    : "text-gray-300 dark:text-gray-600"
+                                }
+                              />
+                            ))}
+                          </div>
+                          {/* Delete Button - Only show if current user wrote the review */}
+                          {user && user.email === review.userEmail && (
+                            <button
+                              onClick={() =>
+                                handleDeleteReview(review.userEmail)
+                              }
+                              className="text-error hover:bg-red-50 dark:hover:bg-red-900 p-2 rounded-lg transition-colors"
+                              title="Delete Review"
+                            >
+                              <FaTrash className="text-sm" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Review Comment */}
+                      <p className="text-gray-700 dark:text-gray-300">
+                        {review.comment}
+                      </p>
                     </div>
                   </div>
-                  <p className="text-gray-600">{review.comment}</p>
-                  <p className="text-sm text-gray-400 mt-2">
-                    {new Date(review.date).toLocaleDateString()}
-                  </p>
                 </div>
               ))}
             </div>

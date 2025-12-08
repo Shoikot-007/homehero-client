@@ -10,6 +10,7 @@ import {
   FaDollarSign,
   FaUser,
   FaStar,
+  FaCheckCircle,
 } from "react-icons/fa";
 
 const MyBookings = () => {
@@ -41,14 +42,6 @@ const MyBookings = () => {
   };
 
   const handleCancelBooking = async (id, serviceName) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to cancel the booking for "${serviceName}"?`
-      )
-    ) {
-      return;
-    }
-
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/api/bookings/${id}`);
       toast.success("Booking cancelled successfully!");
@@ -56,6 +49,20 @@ const MyBookings = () => {
     } catch (error) {
       console.error("Error cancelling booking:", error);
       toast.error("Failed to cancel booking");
+    }
+  };
+
+  const handleCompleteBooking = async (id, serviceName) => {
+    try {
+      await axios.patch(
+        `${import.meta.env.VITE_API_URL}/api/bookings/${id}/status`,
+        { status: "completed" }
+      );
+      toast.success("Booking marked as completed!");
+      fetchMyBookings();
+    } catch (error) {
+      console.error("Error completing booking:", error);
+      toast.error("Failed to complete booking");
     }
   };
 
@@ -90,13 +97,15 @@ const MyBookings = () => {
         <h1 className="text-4xl font-bold text-neutral-dark mb-2">
           My Bookings
         </h1>
-        <p className="text-gray-600">View and manage your service bookings</p>
+        <p className="text-gray-600">
+          View and manage your service bookings
+        </p>
       </div>
 
       {bookings.length > 0 ? (
         <div className="card overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b">
+            <thead className="border-b">
               <tr>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                   Service
@@ -118,7 +127,7 @@ const MyBookings = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-400">
               {bookings.map((booking) => (
                 <tr
                   key={booking._id}
@@ -146,13 +155,17 @@ const MyBookings = () => {
                   <td className="px-6 py-4">
                     <div className="flex items-center space-x-2">
                       <FaUser className="text-gray-400" />
-                      <span>{booking.providerName}</span>
+                      <span>
+                        {booking.providerName}
+                      </span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center space-x-2">
                       <FaCalendar className="text-primary" />
-                      <span>{formatDate(booking.bookingDate)}</span>
+                      <span>
+                        {formatDate(booking.bookingDate)}
+                      </span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -165,35 +178,62 @@ const MyBookings = () => {
                     <span
                       className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
                         booking.status === "pending"
-                          ? "bg-yellow-100 text-yellow-800"
+                          ? "bg-yellow-900 text-yellow-200"
+                          : booking.status === "completed"
+                          ? "bg-green-900 text-green-200"
                           : booking.status === "confirmed"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-gray-100 text-gray-800"
+                          ? "bg-blue-900 text-blue-200"
+                          : "bg-gray-700 text-gray-300"
                       }`}
                     >
-                      {booking.status || "Pending"}
+                      {booking.status
+                        ? booking.status.charAt(0).toUpperCase() +
+                          booking.status.slice(1)
+                        : "Pending"}
                     </span>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleAddReview(booking)}
-                        className="p-2 text-secondary hover:bg-green-50 rounded-lg transition-colors flex items-center space-x-1"
-                        title="Add Review"
-                      >
-                        <FaStar />
-                        <span className="text-sm">Review</span>
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleCancelBooking(booking._id, booking.serviceName)
-                        }
-                        className="p-2 text-error hover:bg-red-50 rounded-lg transition-colors flex items-center space-x-1"
-                        title="Cancel Booking"
-                      >
-                        <FaTrash />
-                        <span className="text-sm">Cancel</span>
-                      </button>
+                      {booking.status !== "completed" && (
+                        <button
+                          onClick={() =>
+                            handleCompleteBooking(
+                              booking._id,
+                              booking.serviceName
+                            )
+                          }
+                          className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors flex items-center space-x-1"
+                          title="Mark as Completed"
+                        >
+                          <FaCheckCircle />
+                          <span className="text-sm">Complete</span>
+                        </button>
+                      )}
+                      {booking.status === "completed" && (
+                        <button
+                          onClick={() => handleAddReview(booking)}
+                          className="p-2 text-secondary hover:bg-green-100 rounded-lg transition-colors flex items-center space-x-1"
+                          title="Add Review"
+                        >
+                          <FaStar />
+                          <span className="text-sm">Review</span>
+                        </button>
+                      )}
+                      {booking.status !== "completed" && (
+                        <button
+                          onClick={() =>
+                            handleCancelBooking(
+                              booking._id,
+                              booking.serviceName
+                            )
+                          }
+                          className="p-2 text-error hover:bg-red-50 rounded-lg transition-colors flex items-center space-x-1"
+                          title="Cancel Booking"
+                        >
+                          <FaTrash />
+                          <span className="text-sm">Cancel</span>
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>

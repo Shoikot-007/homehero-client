@@ -3,12 +3,12 @@ import { FaHome } from "react-icons/fa";
 
 const NotFound = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-linear-to-br from-blue-50 to-purple-50">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-neutral-light">
       <div className="text-center">
         {/* 404 Illustration */}
         <div className="mb-8">
           <h1 className="text-9xl font-bold text-primary mb-4">404</h1>
-          <div className="w-64 h-64 mx-auto bg-neutral-light rounded-full flex items-center justify-center">
+          <div className="w-64 h-64 mx-auto bg-white rounded-full flex items-center justify-center">
             <div className="text-8xl">🏠</div>
           </div>
         </div>

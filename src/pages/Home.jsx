@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
@@ -10,6 +11,7 @@ import Testimonials from "../components/Testimonials";
 import { FaArrowRight } from "react-icons/fa";
 
 const Home = () => {
+  const { user } = useAuth(); // Add this line
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -101,7 +103,7 @@ const Home = () => {
       <Testimonials />
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary to-secondary text-white">
+      <section className="py-20 bg-linear-to-r from-primary to-secondary text-white">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -119,12 +121,15 @@ const Home = () => {
               <Link to="/services" className="btn-accent">
                 Browse Services
               </Link>
-              <Link
-                to="/register"
-                className="inline-block bg-white text-neutral-dark px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
-              >
-                Become a Provider
-              </Link>
+              {/* Only show "Become a Provider" if user is NOT logged in */}
+              {!user && (
+                <Link
+                  to="/register"
+                  className="inline-block bg-white text-neutral-dark px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
+                >
+                  Become a Provider
+                </Link>
+              )}
             </div>
           </motion.div>
         </div>
