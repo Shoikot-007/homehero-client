@@ -4,7 +4,7 @@ import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className="bg-neutral-dark text-white mt-20">
+    <footer className="bg-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
@@ -15,7 +15,7 @@ const Footer = () => {
               </div>
               <h3 className="text-xl font-semibold">HomeHero</h3>
             </div>
-            <p className="text-gray-300 text-sm">
+            <p className="text-sm">
               Connecting you with trusted local service providers for all your
               household needs.
             </p>
@@ -28,7 +28,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/"
-                  className="text-gray-300 hover:text-primary transition-colors"
+                  className="hover:text-primary transition-colors"
                 >
                   Home
                 </Link>
@@ -36,7 +36,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/services"
-                  className="text-gray-300 hover:text-primary transition-colors"
+                  className="hover:text-primary transition-colors"
                 >
                   Services
                 </Link>
@@ -44,7 +44,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/about"
-                  className="text-gray-300 hover:text-primary transition-colors"
+                  className="hover:text-primary transition-colors"
                 >
                   About Us
                 </Link>
@@ -52,7 +52,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/contact"
-                  className="text-gray-300 hover:text-primary transition-colors"
+                  className="hover:text-primary transition-colors"
                 >
                   Contact
                 </Link>
@@ -63,7 +63,7 @@ const Footer = () => {
           {/* Contact Info */}
           <div>
             <h3 className="text-xl font-semibold mb-4">Contact Us</h3>
-            <ul className="space-y-2 text-sm text-gray-300">
+            <ul className="space-y-2 text-sm">
               <li>Email: support@homehero.com</li>
               <li>Phone: +1 (555) 123-4567</li>
               <li>Address: 123 Service St, City, State 12345</li>
@@ -114,7 +114,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm">
           <p>
             &copy; {new Date().getFullYear()} HomeHero. All rights reserved.
           </p>

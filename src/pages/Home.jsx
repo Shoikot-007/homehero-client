@@ -116,15 +116,12 @@ const Home = () => {
               Join thousands of satisfied customers who trust HomeHero
             </p>
             <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link
-                to="/services"
-                className="inline-block bg-accent text-neutral-dark px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-400 transition-all transform hover:scale-105 shadow-lg"
-              >
+              <Link to="/services" className="btn-accent">
                 Browse Services
               </Link>
               <Link
                 to="/register"
-                className="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
+                className="inline-block bg-white text-neutral-dark px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
               >
                 Become a Provider
               </Link>

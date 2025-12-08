@@ -11,7 +11,7 @@ const ServiceCard = ({ service, index }) => {
       className="card group cursor-pointer"
     >
       {/* Service Image */}
-      <div className="relative overflow-hidden rounded-lg mb-4 h-48">
+      <div className="relative overflow-hidden rounded-lg mb-4 h-64">
         <img
           src={service.imageURL || "https://via.placeholder.com/400x300"}
           alt={service.serviceName}

@@ -63,10 +63,7 @@ const HeroSlider = () => {
                   <p className="text-lg md:text-xl mb-8 text-gray-100">
                     {slide.description}
                   </p>
-                  <Link
-                    to="/services"
-                    className="inline-block bg-accent text-neutral-dark px-8 py-4 rounded-lg font-bold text-lg hover:bg-yellow-400 transition-all transform hover:scale-105 shadow-lg"
-                  >
+                  <Link to="/services" className="btn-accent">
                     Explore Services
                   </Link>
                 </div>
@@ -79,8 +76,8 @@ const HeroSlider = () => {
       {/* Custom Pagination Style */}
       <style>{`
         .swiper-pagination-bullet {
-          background: white;
-          opacity: 0.5;
+          background: grey;
+          opacity: 0.4;
           width: 12px;
           height: 12px;
         }
